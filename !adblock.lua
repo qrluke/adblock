@@ -1,8 +1,9 @@
+--Больше скриптов от автора можно найти на сайте: http://www.rubbishman.ru/samp
 --------------------------------------------------------------------------------
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("1.3")
+script_version("1.6")
 script_author("rubbishman")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -11,14 +12,25 @@ local dlstatus = require('moonloader').download_status
 id = -1
 ads1 = "ID\tОбъявление\tПрислал\tНомер\n"
 adnicks = {}
-color = 0x348cb2
+allads = {}
+LSN = 0
+SFN = 0
+LVN = 0
+color = 0xFFFFF
 -------------------------------------MAIN---------------------------------------
 function main()
 	if not isSampfuncsLoaded() or not isSampLoaded() then return end
 	while not isSampAvailable() do wait(100) end
+
+	-- вырежи тут, если хочешь отключить проверку обновлений
 	update()
 	while update ~= false do wait(100) end
+	-- вырежи тут, если хочешь отключить проверку обновлений
+
+	-- вырезать тут, если хочешь отключить сообщение при входе в игру
 	sampAddChatMessage(("ADBLOCK by rubbishman successfully loaded! /ads - show hidden ads!"), color)
+	-- вырезать тут, если хочешь отключить сообщение при входе в игру
+
 	sampRegisterChatCommand("ads", ads)
 	while true do
 		wait(0)
@@ -26,14 +38,22 @@ function main()
 end
 --обработка скрытой объявы
 function new(text)
-	--sampAddChatMessage(text, - 1)
-	id = id + 1
-	adtext = string.sub(text, 13, string.find(text, " Прислал: ") - 2)
-	adnick = string.sub(text, string.find(text, " Прислал: ") + 10, string.find(text, " Тел: ") - 2)
-	adnomer = string.sub(text, string.find(text, " Тел: ") + 6, string.len(text))
-	adnicks[id] = adnick
-	ads1 = "ID\tОбъявление\tПрислал\tНомер\n".."["..id.."]\t["..os.date("%H:%M:%S").."] "..adtext.."\t"..adnick.."\t"..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n", "")
-	if id > 35 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n%["..(id - 35).."%]") - 1)) end
+	trigger = false
+	--sampAddChatMessage(text, - 1) -- это выводит в чат объяву, которую скрипт вносит в диалог
+	for i = #allads - 35, #allads do
+		if allads[i] ~= nil and text == allads[i] then trigger = true break end
+	end
+	if trigger == false then
+		id = id + 1
+		allads[id] = text
+		adtext = string.sub(text, 13, string.find(text, " Прислал: ") - 2)
+		adnick = string.sub(text, string.find(text, " Прислал: ") + 10, string.find(text, " Тел: ") - 2)
+		adnomer = string.sub(text, string.find(text, " Тел: ") + 6, string.len(text))
+		adnicks[id] = adnick
+		ads1 = "ID\tОбъявление\tПрислал\tНомер\n".."["..id.."]\t["..os.date("%H:%M:%S").."] "..adtext.."\t"..adnick.."\t"..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n", "")
+		if id > 35 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n%["..(id - 35).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 35 объяв. можно заморочиться со страницами, но мне лень.
+	end
+	trigger = false
 end
 --активация списка скрытых объявлений
 function ads()
@@ -41,12 +61,12 @@ function ads()
 end
 --список скрытых объявлений
 function adss()
-	sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version, ads1, "Выбрать", "Закрыть", 5)
+	sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version.."   LSN: "..LSN..". SFN: "..SFN..". LVN: "..LVN..".", ads1, "Выбрать", "Закрыть", 5)
 	dialog = sampGetDialogText()
 	lastid = id
 	while sampIsDialogActive(5125) do wait(100) end
 	local resultMain, buttonMain, typ = sampHasDialogRespond(5125)
-	if buttonMain == 1 and typ ~= nil then
+	if buttonMain == 1 and ads1 ~= "ID\tОбъявление\tПрислал\tНомер\n" then
 		for i = 0, 1001 do
 			if sampIsPlayerConnected(i) and sampGetPlayerNickname(i) == adnicks[lastid - typ] then
 				sampShowDialog(9899, "Получатель: "..adnicks[lastid - typ], "Введите текст смски и нажмите \"Отправить\".", "Отправить", "Закрыть", 1)
@@ -70,10 +90,15 @@ end
 --------------------------------------------------------------------------------
 function sampev.onServerMessage(color, text)
 	if color == 14221512 and string.find(text, "Объявление:") then
-		lua_thread.create(new, text)
+		if not string.find(text, "101.1") and not string.find(text, "102.2") and not string.find(text, "103.3") and not string.find(text, "radio") and not string.find(text, "FM") and not string.find(text, "Свободная") and not string.find(text, "Эфир") then
+			lua_thread.create(new, text)
+		end
 		return false
 	end
 	if color == 14221512 and string.find(text, "сотрудник") then
+		if string.find(text, "LV") then LVN = LVN + 1 end
+		if string.find(text, "LS") then LSN = LSN + 1 end
+		if string.find(text, "SF") then SFN = SFN + 1 end
 		return false
 	end
 end
