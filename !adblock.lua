@@ -3,12 +3,13 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.0")
+script_version("2.11")
 script_author("rubbishman")
 script_description("/ads")
 -------------------------------------var----------------------------------------
 local sampev = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
+local ffi = require('ffi')
 local id = -1
 local ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"
 local adnicks = {}
@@ -62,7 +63,9 @@ local servers = {
 function main()
 	if not isSampfuncsLoaded() or not isSampLoaded() then return end
 	while not isSampAvailable() do wait(100) end
+	
 
+	
 	-- вырежи тут, если хочешь отключить проверку обновлений
 	update()
 	while update ~= false do wait(100) end
@@ -80,6 +83,11 @@ function main()
 
 	if mode == nil then thisScript():unload() end
 	sampRegisterChatCommand("ads", ads)
+	
+	--вырежи тут, если не хочешь делиться статистикой
+	telemetry()
+	--вырежи тут, если не хочешь делиться статистикой
+	
 	while true do
 		wait(0)
 		if Enable and (mode == "Samp-Rp" or mode == "Evolve-Rp") then
@@ -95,7 +103,7 @@ end
 function samprp(text)
 	trigger = false
 	--sampAddChatMessage(text, - 1) -- это выводит в чат объяву, которую скрипт вносит в диалог
-	for i = #allads - 30, #allads do
+	for i = #allads - 25, #allads do
 		if allads[i] ~= nil and text == allads[i] then trigger = true blocked = blocked + 1 break end
 	end
 	if trigger == false then
@@ -121,7 +129,7 @@ function samprp(text)
 		if not string.find(string.rlower(adtext), "ферма") and not string.find(string.rlower(adtext), "farm") and not string.find(string.rlower(adtext), "сто") and not string.find(string.rlower(adtext), "станция") and not string.find(string.rlower(adtext), "мастерская") and not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") and not string.find(string.rlower(adtext), "казино") then color = "{00FFFF}" end
 		coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
 		ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-		if id > 30 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 30).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 30 объяв. можно заморочиться со страницами, но мне лень.
+		if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
 	end
 	trigger = false
 end
@@ -130,7 +138,7 @@ function advancerp(text)
 	trigger = false
 	--sampAddChatMessage(text, - 1) -- это выводит в чат объяву, которую скрипт вносит в диалог
 	if not string.find(text, "Отправила") then
-		for i = #allads - 30, #allads do
+		for i = #allads - 25, #allads do
 			if allads[i] ~= nil and text == allads[i] then trigger = true blocked = blocked + 1 break end
 		end
 		if trigger == false then
@@ -147,7 +155,7 @@ function advancerp(text)
 			if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
 			coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
 			ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-			if id > 30 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 30).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 30 объяв. можно заморочиться со страницами, но мне лень.
+			if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
 		end
 		trigger = false
 	end
@@ -157,7 +165,7 @@ function diamondrp(text)
 	trigger = false
 	--sampAddChatMessage(text, - 1) -- это выводит в чат объяву, которую скрипт вносит в диалог
 	if not string.find(text, "Отправила") then
-		for i = #allads - 30, #allads do
+		for i = #allads - 25, #allads do
 			if allads[i] ~= nil and text == allads[i] then trigger = true blocked = blocked + 1 break end
 		end
 		if trigger == false then
@@ -173,7 +181,7 @@ function diamondrp(text)
 			if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
 			coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
 			ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-			if id > 30 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 30).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 30 объяв. можно заморочиться со страницами, но мне лень.
+			if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
 		end
 		trigger = false
 	end
@@ -183,7 +191,7 @@ function arizonarp(text)
 	trigger = false
 	--sampAddChatMessage(text, - 1) -- это выводит в чат объяву, которую скрипт вносит в диалог
 	if not string.find(text, "Отправила") then
-		for i = #allads - 30, #allads do
+		for i = #allads - 25, #allads do
 			if allads[i] ~= nil and text == allads[i] then trigger = true blocked = blocked + 1 break end
 		end
 		if trigger == false then
@@ -200,7 +208,7 @@ function arizonarp(text)
 			if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
 			coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
 			ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-			if id > 30 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 30).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 30 объяв. можно заморочиться со страницами, но мне лень.
+			if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
 		end
 		trigger = false
 	end
@@ -230,7 +238,7 @@ function trinityrp(text)
 		if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
 		coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
 		ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-		if id > 30 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 30).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 30 объяв. можно заморочиться со страницами, но мне лень.
+		if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
 		adtext = nil
 		adnick = nil
 		adnick = nil
@@ -256,7 +264,7 @@ function imperial(text1)
 		if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
 		coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
 		ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-		if id > 30 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 30).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 30 объяв. можно заморочиться со страницами, но мне лень.
+		if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
 	end
 	trigger = false
 end
@@ -311,7 +319,7 @@ function adss()
 							scount = scount + 1
 						end
 					end
-					if scount < 30 then
+					if scount < 25 then
 						wait(400)
 						searchres()
 					else
@@ -521,34 +529,67 @@ end
 ------------------------------------UPDATE--------------------------------------
 --------------------------------------------------------------------------------
 function update()
-	local fpath = os.getenv('TEMP') .. '\\adblock-version.json'
-	downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/version.json', fpath, function(id, status, p1, p2)
-		if status == dlstatus.STATUS_ENDDOWNLOADDATA then
-		local f = io.open(fpath, 'r')
-		if f then
-			local info = decodeJson(f:read('*a'))
-			updatelink = info.updateurl
-			if info and info.latest then
-				version = tonumber(info.latest)
-				if version > tonumber(thisScript().version) then
-					lua_thread.create(goupdate)
-				else
-					update = false
-				end
-			end
-		end
-	end
-end)
+  local fpath = os.getenv('TEMP') .. '\\adblock-version.json'
+  downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/version.json', fpath,
+    function(id, status, p1, p2)
+      if status == 1 then
+        print('ADBLOCK can\'t establish connection to rubbishman.ru')
+        update = false
+      else
+        if status == 6 then
+          local f = io.open(fpath, 'r')
+          if f then
+            local info = decodeJson(f:read('*a'))
+            updatelink = info.updateurl
+            if info and info.latest then
+              version = tonumber(info.latest)
+              if version > tonumber(thisScript().version) then
+                lua_thread.create(goupdate)
+				
+              else
+                update = false
+              end
+            end
+          end
+        end
+      end
+  end)
 end
+
 --скачивание актуальной версии
 function goupdate()
-sampAddChatMessage(("[ADBLOCK]: Обнаружено обновление. Попробую обновиться.."), color)
-sampAddChatMessage(("[ADBLOCK]: Текущая версия: "..thisScript().version..". Новая версия: "..version), color)
-wait(300)
-downloadUrlToFile(updatelink, thisScript().path, function(id3, status1, p13, p23)
-	if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
-	sampAddChatMessage(("[ADBLOCK]: Обновление завершено!"), color)
-	thisScript():reload()
+  sampAddChatMessage(("[ADBLOCK]: Обнаружено обновление. Попробую обновиться.."), color)
+  sampAddChatMessage(("[ADBLOCK]: Текущая версия: "..thisScript().version..". Новая версия: "..version), color)
+  wait(300)
+  downloadUrlToFile(updatelink, thisScript().path,
+    function(id3, status1, p13, p23)
+      if status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
+        sampAddChatMessage(("[ADBLOCK]: Обновление завершено!"), color)
+        thisScript():reload()
+      end
+    end
+  )
 end
-end)
+--сбор статистики
+function telemetry()
+  --получаем серийный номер логического диска
+  ffi.cdef[[
+  int __stdcall GetVolumeInformationA(
+      const char* lpRootPathName,
+      char* lpVolumeNameBuffer,
+      uint32_t nVolumeNameSize,
+      uint32_t* lpVolumeSerialNumber,
+      uint32_t* lpMaximumComponentLength,
+      uint32_t* lpFileSystemFlags,
+      char* lpFileSystemNameBuffer,
+      uint32_t nFileSystemNameSize
+  );
+  ]]
+  local serial = ffi.new("unsigned long[1]", 0)
+  ffi.C.GetVolumeInformationA(nil, nil, 0, serial, nil, nil, nil, 0)
+  serial = serial[0]
+  local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
+  local nickname = sampGetPlayerNickname(myid)
+  local fpath = os.getenv('TEMP') .. '\\rubbishman-adblock-telemetry.tmp'
+  downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/stats.php?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&m='..mode..'&v='..getMoonloaderVersion(), fpath)
 end
