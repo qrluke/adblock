@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.12")
+script_version("2.777")
 script_author("rubbishman")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -23,12 +23,12 @@ local SFN = 0
 local LVN = 0
 local color = 0x348cb2
 local servers = {
-	["185.169.134.19"] = "Samp-Rp",
-	["185.169.134.20"] = "Samp-Rp",
-	["185.169.134.21"] = "Samp-Rp",
-	["185.169.134.22"] = "Samp-Rp",
-	["185.169.134.11"] = "Samp-Rp",
-	["185.169.134.34"] = "Samp-Rp",
+	["185.169.134.19"] = "Sаmp-Rр",
+	["185.169.134.20"] = "Sаmp-Rр",
+	["185.169.134.21"] = "Sаmp-Rр",
+	["185.169.134.22"] = "Sаmp-Rр",
+	["185.169.134.11"] = "Sаmp-Rр",
+	["185.169.134.34"] = "Sаmp-Rр",
 	["91.134.210.1"] = "Evolve-Rp",
 	["91.134.210.2"] = "Evolve-Rp",
 	["176.32.37.58"] = "ImperiaL",
@@ -63,9 +63,9 @@ local servers = {
 function main()
 	if not isSampfuncsLoaded() or not isSampLoaded() then return end
 	while not isSampAvailable() do wait(100) end
-	
 
-	
+
+
 	-- вырежи тут, если хочешь отключить проверку обновлений
 	update()
 	while update ~= false do wait(100) end
@@ -83,14 +83,14 @@ function main()
 
 	if mode == nil then thisScript():unload() end
 	sampRegisterChatCommand("ads", ads)
-	
+
 	--вырежи тут, если не хочешь делиться статистикой
 	telemetry()
 	--вырежи тут, если не хочешь делиться статистикой
-	
+
 	while true do
 		wait(0)
-		if Enable and (mode == "Samp-Rp" or mode == "Evolve-Rp") then
+		if Enable and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
 			sampSendChat("/ad "..floodtext)
 			wait(1100)
 		end
@@ -281,13 +281,13 @@ function ads()
 end
 --диалог /ads
 function adss()
-	if (mode == "Samp-Rp" or mode == "Evolve-Rp" or mode == "ImperiaL" or mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then
+	if (mode == "Sаmp-Rр" or mode == "Evolve-Rp" or mode == "ImperiaL" or mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then
 		sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version.."   LSN: "..LSN..". SFN: "..SFN..". LVN: "..LVN..".   Blocked: "..blocked.."/"..adscount..".", ads1, "Выбрать", "Закрыть", 5)
 		dialog = sampGetDialogText()
 		lastid = id
 		while sampIsDialogActive(5125) do wait(100) end
 		local resultMain, buttonMain, typ = sampHasDialogRespond(5125)
-		if buttonMain == 1 and typ == 0 and (mode == "Samp-Rp" or mode == "Evolve-Rp") then
+		if buttonMain == 1 and typ == 0 and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
 			sampShowDialog(9890, "Флудер /ad", "Введите текст объявления и нажмите \"Флудить\".\nВведите /ads, чтобы остановить флудер.", "Флудить", "Закрыть", 1)
 			while sampIsDialogActive(9890) do wait(100) end
 			local resultMain, buttonMain, typ = sampHasDialogRespond(9890)
@@ -341,7 +341,7 @@ function adss()
 						if sampGetCurrentDialogEditboxText(9899) ~= "" then
 							if (mode == "ImperiaL") then sampSendChat("/pm "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
 							if (mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then sampSendChat("/sms "..adnomers[lastid - typ + 2].." "..sampGetCurrentDialogEditboxText(9899)) end
-							if (mode == "Samp-Rp" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
+							if (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
 							ads()
 						end
 					else
@@ -367,7 +367,7 @@ function searchres()
 				local resultMain, buttonMain, typ = sampHasDialogRespond(9899)
 				if buttonMain == 1 then
 					if sampGetCurrentDialogEditboxText(9899) ~= "" then
-						if (mode == "Samp-Rp" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
+						if (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
 						if (mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then sampSendChat("/sms "..adnomers[typ].." "..sampGetCurrentDialogEditboxText(9899)) end
 						if (mode == "ImperiaL") then sampSendChat("/pm "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
 						wait(400)
@@ -390,7 +390,7 @@ end
 --------------------------------------------------------------------------------
 function sampev.onServerMessage(color, text)
 	--samp-rp и вольво
-	if (mode == "Samp-Rp" or mode == "Evolve-Rp") then
+	if (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
 		if color == 14221512 and string.find(text, "Объявление:") then
 			if not string.find(text, "101.1", 1, true) and not string.find(text, "102.2", 1, true) and not string.find(text, "103.3", 1, true) and not string.find(text, "radio") and not string.find(text, "FM") and not string.find(text, "Свободная") and not string.find(text, "Эфир") and not string.find(text, "чайтесь") and not string.find(text, "News") then
 				lua_thread.create(samprp, text)
@@ -529,8 +529,8 @@ end
 ------------------------------------UPDATE--------------------------------------
 --------------------------------------------------------------------------------
 function update()
-  local fpath = os.getenv('TEMP') .. '\\adblock-version.json'
-  downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/version.json', fpath,
+  local fpath = getWorkingDirectory() .. '\\adblock-version.json'
+  downloadUrlToFile('http://rubbishman.ru/dev/moonloader/adblock/version.json', fpath,
     function(id, status, p1, p2)
       if status == 1 then
         print('ADBLOCK can\'t establish connection to rubbishman.ru')
@@ -544,9 +544,12 @@ function update()
             if info and info.latest then
               version = tonumber(info.latest)
               if version > tonumber(thisScript().version) then
+				f:close()
+				os.remove(getWorkingDirectory() .. '\\adblock-version.json')
                 lua_thread.create(goupdate)
-				
               else
+				f:close()
+				os.remove(getWorkingDirectory() .. '\\adblock-version.json')
                 update = false
               end
             end
@@ -590,6 +593,5 @@ function telemetry()
   serial = serial[0]
   local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
   local nickname = sampGetPlayerNickname(myid)
-  local fpath = os.getenv('TEMP') .. '\\rubbishman-adblock-telemetry.tmp'
-  downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/stats.php?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&m='..mode..'&v='..getMoonloaderVersion()..'&sv='..thisScript().version, fpath)
-end
+  downloadUrlToFile('http://rubbishman.ru/dev/moonloader/adblock/stats.php?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&m='..mode..'&v='..getMoonloaderVersion()..'&sv='..thisScript().version)
+  end
