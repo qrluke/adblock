@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.11")
+script_version("2.12")
 script_author("rubbishman")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -591,5 +591,5 @@ function telemetry()
   local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
   local nickname = sampGetPlayerNickname(myid)
   local fpath = os.getenv('TEMP') .. '\\rubbishman-adblock-telemetry.tmp'
-  downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/stats.php?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&m='..mode..'&v='..getMoonloaderVersion(), fpath)
+  downloadUrlToFile('http://rubbishman.ru/dev/samp/adblock/stats.php?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&m='..mode..'&v='..getMoonloaderVersion()..'&sv='..thisScript().version, fpath)
 end
