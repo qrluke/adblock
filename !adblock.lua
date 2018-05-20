@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.777")
+script_version("2.778")
 script_author("rubbishman")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -197,10 +197,7 @@ function arizonarp(text)
 		if trigger == false then
 			id = id + 1
 			allads[id] = text
-			adtext = string.sub(text, 13, string.find(text, " Отправил:", 1, true) - 1)
-			adnick = string.sub(text, string.find(text, "Отправил:", 1, true) + 10, string.find(text, "Тел.") - 5)
-			adnick = string.sub(adnick, 1, string.find(adnick, "[", 1, true) - 1)
-			adnomer = string.sub(text, string.find(text, "Тел. ", 1, true) + 5, string.len(text))
+			adtext, adnick, adnomer = string.match(text, "Объявление: (.+) Отправил: (%g+)%[%d+%] Тел. (%d+)")
 			adnicks[id] = adnick
 			adnomers[id] = adnomer
 			if string.find(string.rlower(adtext), "куплю") then color = "{FFFF00}" end
