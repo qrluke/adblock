@@ -1,5 +1,6 @@
 # Описание 
 Многих раздражают объявления на RolePlay серверах SA:MP, потому что они часто отвлекают внимание.
+
 ADBLOCK был создан для решения этой проблемы.
 
 **Требования:** [CLEO 4.3](http://cleo.li/?lang=ru), [SAMPFUNCS 5.3.3](https://blast.hk/threads/17/), [MoonLoader](https://blast.hk/threads/13305/), [SAMP.Lua](https://blast.hk/threads/14624/).
