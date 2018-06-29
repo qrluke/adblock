@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.81")
+script_version("2.85")
 script_author("rubbishman")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -26,7 +26,7 @@ local color = 0x348cb2
 local servers = {
   ["185.169.134.19"] = "Sаmp-Rр",
   ["185.169.134.20"] = "Sаmp-Rр",
-  ["185.169.134.21"] = "Sаmp-Rр", 
+  ["185.169.134.21"] = "Sаmp-Rр",
   ["185.169.134.22"] = "Sаmp-Rр",
   ["185.169.134.11"] = "Sаmp-Rр",
   ["185.169.134.34"] = "Sаmp-Rр",
@@ -608,7 +608,6 @@ function goupdate()
         print('Загрузка обновления завершена.')
         sampAddChatMessage((prefix..'Обновление завершено! Подробнее об обновлении - /pisslog.'), color)
         goupdatestatus = true
-        wait(100)
         thisScript():reload()
       end
       if status1 == dlstatus.STATUSEX_ENDDOWNLOAD then
