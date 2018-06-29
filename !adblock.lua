@@ -73,7 +73,7 @@ function main()
   update()
   while update ~= false do wait(100) end
   -- вырежи тут, если хочешь отключить проверку обновлений
-
+  mode = servers[sampGetCurrentServerAddress()]
 
 
   -- вырезать тут, если хочешь отключить сообщение при входе в игру
