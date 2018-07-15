@@ -2,12 +2,12 @@
 Многих раздражают объявления на RolePlay серверах SA:MP, потому что они часто отвлекают внимание.  
 ADBLOCK был создан для решения этой проблемы. Список того, что он умеет, находится ниже.  
 
-**Требования:** [CLEO 4.3](http://cleo.li/?lang=ru), [SAMPFUNCS 5.3.3](https://blast.hk/threads/17/), [MoonLoader](https://blast.hk/threads/13305/), [SAMP.Lua](https://blast.hk/threads/14624/).  
+**Требования:** [CLEO 4+](http://cleo.li/?lang=ru), [SAMPFUNCS 5.3.3](https://blast.hk/threads/17/), [MoonLoader](https://blast.hk/threads/13305/), [SAMP.Lua](https://blast.hk/threads/14624/).  
 **Активация:** Скрипт активируется автоматически. У скрипта нет настроек, поэтому автообновление, телеметрию и уведомление при входе можно отключить только вручную, вырезав блокнотом по линии в коде.
 
 * /ads - открыть диалог скрипта.
 
-**Автор:** [qrlk (James_Bond / Phil_Coulson)](http://rubbishman.ru/samp).
+**Автор:** [qrlk (James_Bond / Phil_Coulson)](http://rubbishman.ru/samp).  
 **Обсуждение в группе VK:** [ссылка](https://vk.com/topic-168860334_38597269).
 
 # Функции
