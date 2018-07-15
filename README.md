@@ -7,7 +7,8 @@ ADBLOCK был создан для решения этой проблемы. С�
 
 * /ads - открыть диалог скрипта.
 
-**Автор:** [rubbishman (James_Bond / Phil_Coulson)](http://rubbishman.ru/samp).
+**Автор:** [qrlk (James_Bond / Phil_Coulson)](http://rubbishman.ru/samp).
+**Обсуждение в группе VK:** [ссылка](https://vk.com/topic-168860334_38597269).
 
 # Функции
 **Скрипт поддерживает**: Samp-Rp, Evolve-Rp, Advance RP, Diamond RP, Arizona RP, Trinity RP и ImperiaL RPG.
