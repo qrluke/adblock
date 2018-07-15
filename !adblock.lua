@@ -1,15 +1,23 @@
+--Больше скриптов от автора можно найти в группе ВК: http://vk.com/qrlk.mods
 --Больше скриптов от автора можно найти на сайте: http://www.rubbishman.ru/samp
 --------------------------------------------------------------------------------
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.86")
-script_author("rubbishman")
+script_version("2.88")
+script_author("qrlk")
 script_description("/ads")
 -------------------------------------var----------------------------------------
 local prefix = '['..string.upper(thisScript().name)..']: '
 local sampev = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
+local inicfg = require 'inicfg'
+local data = inicfg.load({
+  options =
+  {
+    showad = true,
+  },
+}, 'adblock')
 local ffi = require('ffi')
 local id = -1
 local ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"
@@ -77,13 +85,22 @@ function main()
 
 
   -- вырезать тут, если хочешь отключить сообщение при входе в игру
-  if mode ~= nil then sampAddChatMessage(("ADBLOCK v"..thisScript().version.." successfully loaded! /ads - show hidden ads! Mode: "..mode..". Author: rubbishman.ru"), color)
+  if mode ~= nil then sampAddChatMessage(("ADBLOCK v"..thisScript().version.." successfully loaded! /ads - show hidden ads! Mode: "..mode..". <> by qrlk."), color)
   else
-    sampAddChatMessage(("ADBLOCK v"..thisScript().version.." not loaded! Reason: unknown server. Author: rubbishman.ru"), 0xFF4500)
+    sampAddChatMessage(("ADBLOCK v"..thisScript().version.." not loaded! Reason: unknown server. <> by qrlk."), 0xFF4500)
   end
   -- вырезать тут, если хочешь отключить сообщение при входе в игру
 
   if mode == nil then thisScript():unload() end
+
+	if data.options.showad == true then
+		sampAddChatMessage("[ADBLOCK]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", - 1)
+		sampAddChatMessage("[ADBLOCK]: Подписавшись на неё, вы сможете получать новости об обновлениях,", - 1)
+		sampAddChatMessage("[ADBLOCK]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", - 1)
+		sampAddChatMessage("[ADBLOCK]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", - 1)
+		data.options.showad = false
+		inicfg.save(data, "adblock")
+	end
   sampRegisterChatCommand("ads", ads)
 
 
