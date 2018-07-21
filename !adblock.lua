@@ -4,7 +4,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.9")
+script_version("2.91")
 script_author("qrlk")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -111,7 +111,7 @@ function main()
       sampAddChatMessage("Скрытие объяв в чате: "..tostring(data.options.toggle), 0x348cb2)
     end
   )
-	
+
   while true do
     wait(0)
     if Enable and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
@@ -153,7 +153,6 @@ function samprp(text)
     if string.find(string.rlower(adtext), "казино") then color = "{FF0000}" end
     if not string.find(string.rlower(adtext), "ферма") and not string.find(string.rlower(adtext), "farm") and not string.find(string.rlower(adtext), "сто") and not string.find(string.rlower(adtext), "станция") and not string.find(string.rlower(adtext), "мастерская") and not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") and not string.find(string.rlower(adtext), "казино") then color = "{00FFFF}" end
     coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
-    ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
   end
   trigger = false
 end
@@ -178,7 +177,6 @@ function advancerp(text)
       if string.find(string.rlower(adtext), "продам") then color = "{00FF00}" end
       if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
       coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
-      ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
     end
     trigger = false
   end
@@ -203,7 +201,6 @@ function diamondrp(text)
       if string.find(string.rlower(adtext), "продам") then color = "{00FF00}" end
       if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
       coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
-      ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
     end
     trigger = false
   end
@@ -226,7 +223,6 @@ function arizonarp(text)
       if string.find(string.rlower(adtext), "продам") then color = "{00FF00}" end
       if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
       coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
-      ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
     end
     trigger = false
   end
@@ -352,17 +348,21 @@ function adss()
       end
     end
     local resultMain, buttonMain, typ = sampHasDialogRespond(5125)
-    if buttonMain == 1 and typ == 0 and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
-      sampShowDialog(9890, "Флудер /ad", "Введите текст объявления и нажмите \"Флудить\".\nВведите /ads, чтобы остановить флудер.", "Флудить", "Закрыть", 1)
-      while sampIsDialogActive(9890) do wait(100) end
-      local resultMain, buttonMain, typ = sampHasDialogRespond(9890)
-      if buttonMain == 1 then
-        if sampGetCurrentDialogEditboxText(9890) ~= "" then
-          floodtext = sampGetCurrentDialogEditboxText(9890)
-          Enable = true
+    if buttonMain == 1 and typ == 0 then
+      if mode == "Sаmp-Rр" or mode == "Evolve-Rp" then
+        sampShowDialog(9890, "Флудер /ad", "Введите текст объявления и нажмите \"Флудить\".\nВведите /ads, чтобы остановить флудер.", "Флудить", "Закрыть", 1)
+        while sampIsDialogActive(9890) do wait(100) end
+        local resultMain, buttonMain, typ = sampHasDialogRespond(9890)
+        if buttonMain == 1 then
+          if sampGetCurrentDialogEditboxText(9890) ~= "" then
+            floodtext = sampGetCurrentDialogEditboxText(9890)
+            Enable = true
+          end
+        else
+          ads()
         end
       else
-        ads()
+        sampShowDialog(9899, "{348cb2}"..thisScript().name.." v"..thisScript().version, "Флудер /ad не поддерживает ваш проект.", "Окей")
       end
     elseif buttonMain == 1 and ads1 ~= "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n" and typ == 1 then
       sampShowDialog(9891, "Поиск в /ads", "Введите текст для поиска и нажмите \"Найти\".\nМожно вбивать ники, номера и текст объявления.", "Найти", "Закрыть", 1)
