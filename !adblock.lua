@@ -4,10 +4,12 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.88")
+script_version("2.9")
 script_author("qrlk")
 script_description("/ads")
 -------------------------------------var----------------------------------------
+
+math.randomseed(os.time())
 local prefix = '['..string.upper(thisScript().name)..']: '
 local sampev = require 'lib.samp.events'
 local dlstatus = require('moonloader').download_status
@@ -16,6 +18,7 @@ local data = inicfg.load({
   options =
   {
     showad = true,
+    toggle = true,
   },
 }, 'adblock')
 local ffi = require('ffi')
@@ -32,9 +35,7 @@ local SFN = 0
 local LVN = 0
 local color = 0x348cb2
 local servers = {
-  ["185.169.134.19"] = "Sаmp-Rр",
   ["185.169.134.20"] = "Sаmp-Rр",
-  ["185.169.134.21"] = "Sаmp-Rр",
   ["185.169.134.22"] = "Sаmp-Rр",
   ["185.169.134.11"] = "Sаmp-Rр",
   ["185.169.134.34"] = "Sаmp-Rр",
@@ -50,7 +51,6 @@ local servers = {
   ["5.254.104.137"] = "Advance-Rp",
   ["5.254.104.138"] = "Advance-Rp",
   ["5.254.104.139"] = "Advance-Rp",
-  ["5.254.104.132"] = "Advance-Rp",
   ["5.254.123.2"] = "Diamond-Rp",
   ["5.254.123.3"] = "Diamond-Rp",
   ["5.254.123.4"] = "Diamond-Rp",
@@ -65,8 +65,10 @@ local servers = {
   ["185.169.134.44"] = "Arizona-Rp",
   ["185.169.134.45"] = "Arizona-Rp",
   ["185.169.134.5"] = "Arizona-Rp",
-  ["178.32.204.129"] = "Trinity-Rp",
-  ["217.182.53.133"] = "Trinity-Rp",
+  ["185.169.134.59"] = "Arizona-Rp",
+  ["185.169.134.83"] = "Trinity-Rp",
+  ["185.169.134.84"] = "Trinity-Rp",
+  ["185.169.134.85"] = "Trinity-Rp",
 }
 -------------------------------------MAIN---------------------------------------
 function main()
@@ -85,7 +87,7 @@ function main()
 
 
   -- вырезать тут, если хочешь отключить сообщение при входе в игру
-  if mode ~= nil then sampAddChatMessage(("ADBLOCK v"..thisScript().version.." successfully loaded! /ads - show hidden ads! Mode: "..mode..". <> by qrlk."), color)
+  if mode ~= nil then sampAddChatMessage(("ADBLOCK v"..thisScript().version.." successfully loaded! /ads - show hidden ads! /tads - toggle! Mode: "..mode..". <> by qrlk."), color)
   else
     sampAddChatMessage(("ADBLOCK v"..thisScript().version.." not loaded! Reason: unknown server. <> by qrlk."), 0xFF4500)
   end
@@ -93,17 +95,23 @@ function main()
 
   if mode == nil then thisScript():unload() end
 
-	if data.options.showad == true then
-		sampAddChatMessage("[ADBLOCK]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", - 1)
-		sampAddChatMessage("[ADBLOCK]: Подписавшись на неё, вы сможете получать новости об обновлениях,", - 1)
-		sampAddChatMessage("[ADBLOCK]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", - 1)
-		sampAddChatMessage("[ADBLOCK]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", - 1)
-		data.options.showad = false
-		inicfg.save(data, "adblock")
-	end
+  if data.options.showad == true then
+    sampAddChatMessage("[ADBLOCK]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", - 1)
+    sampAddChatMessage("[ADBLOCK]: Подписавшись на неё, вы сможете получать новости об обновлениях,", - 1)
+    sampAddChatMessage("[ADBLOCK]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", - 1)
+    sampAddChatMessage("[ADBLOCK]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", - 1)
+    data.options.showad = false
+    inicfg.save(data, "adblock")
+  end
   sampRegisterChatCommand("ads", ads)
-
-
+  sampRegisterChatCommand("tads",
+    function()
+      data.options.toggle = not data.options.toggle
+      inicfg.save(data, "adblock")
+      sampAddChatMessage("Скрытие объяв в чате: "..tostring(data.options.toggle), 0x348cb2)
+    end
+  )
+	
   while true do
     wait(0)
     if Enable and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
@@ -134,6 +142,7 @@ function samprp(text)
       adnomer = "ERROR"
     end
     adnicks[id] = adnick
+    adnomers[id] = adnomer
     if string.find(string.rlower(adtext), "куплю") then color = "{FFFF00}" end
     if string.find(string.rlower(adtext), "продам") then color = "{00FF00}" end
     if string.find(string.rlower(adtext), "сто") then color = "{800080}" end
@@ -145,7 +154,6 @@ function samprp(text)
     if not string.find(string.rlower(adtext), "ферма") and not string.find(string.rlower(adtext), "farm") and not string.find(string.rlower(adtext), "сто") and not string.find(string.rlower(adtext), "станция") and not string.find(string.rlower(adtext), "мастерская") and not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") and not string.find(string.rlower(adtext), "казино") then color = "{00FFFF}" end
     coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
     ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-    if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
   end
   trigger = false
 end
@@ -171,7 +179,6 @@ function advancerp(text)
       if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
       coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
       ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-      if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
     end
     trigger = false
   end
@@ -197,7 +204,6 @@ function diamondrp(text)
       if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
       coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
       ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-      if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
     end
     trigger = false
   end
@@ -221,7 +227,6 @@ function arizonarp(text)
       if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
       coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
       ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-      if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
     end
     trigger = false
   end
@@ -251,7 +256,6 @@ function trinityrp(text)
     if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
     coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
     ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-    if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
     adtext = nil
     adnick = nil
     adnick = nil
@@ -272,12 +276,12 @@ function imperial(text1)
     adnick = string.sub(text1, string.find(text1, "]: ") + 3, string.find(text1, "%[(%d+)%]") - 1)
     adnomer = string.sub(text1, string.find(text1, "%[(%d+)%]") + 1, (string.len(text1) - 1))
     adnicks[id] = adnick
+    adnomers[id] = adnomer
     if string.find(string.rlower(adtext), "куплю") then color = "{FFFF00}" end
     if string.find(string.rlower(adtext), "продам") then color = "{00FF00}" end
     if not string.find(string.rlower(adtext), "продам") and not string.find(string.rlower(adtext), "куплю") then color = "{00FFFF}" end
     coolads[id] = color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"
     ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"..color.."["..id.."]\t"..color.."["..os.date("%H:%M:%S").."] "..adtext.."\t"..color..adnick.."\t"..color..string.format("%s", adnomer).."\n"..string.gsub(ads1, "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n", "")
-    if id > 25 then ads1 = string.sub(ads1, 1, (string.find(ads1, "\n{......}%["..(id - 25).."%]") - 1)) end --у диалога самповского есть огран по длине строки, поэтому стоит ограничение в 25 объяв. можно заморочиться со страницами, но мне лень.
   end
   trigger = false
 end
@@ -295,10 +299,58 @@ end
 --диалог /ads
 function adss()
   if (mode == "Sаmp-Rр" or mode == "Evolve-Rp" or mode == "ImperiaL" or mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then
-    sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version.."   LSN: "..LSN..". SFN: "..SFN..". LVN: "..LVN..".   Blocked: "..blocked.."/"..adscount..".", ads1, "Выбрать", "Закрыть", 5)
+    if tab == nil then tab = 1 end
+    length = #coolads - (tab - 1) * 25
+    ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"
+    lastid = nil
+    for i = length, length - 25, - 1 do
+      if coolads[i] ~= nil then
+        ads1 = ads1..coolads[i]
+        if lastid == nil then lastid = i end
+        if i > lastid then lastid = i end
+      end
+    end
+    sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version.."   LSN: "..LSN..". SFN: "..SFN..". LVN: "..LVN..".   Blocked: "..blocked.."/"..adscount..".   Tab: "..tab..".   Use arrows to control.", ads1, "Выбрать", "Закрыть", 5)
     dialog = sampGetDialogText()
-    lastid = id
-    while sampIsDialogActive(5125) do wait(100) end
+    while sampIsDialogActive(5125) do
+      wait(0)
+      if wasKeyPressed(37) then
+        if tab ~= 1 then
+          tab = tab - 1
+          if tab == nil then tab = 1 end
+          length = #coolads - (tab - 1) * 25
+          ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"
+          lastid = nil
+          for i = length, length - 25, - 1 do
+            if coolads[i] ~= nil then
+              if lastid == nil then lastid = i end
+              ads1 = ads1..coolads[i]
+              if i > lastid then lastid = i end
+            end
+          end
+          sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version.."   LSN: "..LSN..". SFN: "..SFN..". LVN: "..LVN..".   Blocked: "..blocked.."/"..adscount..".   Tab: "..tab..".   Use arrows to control.", ads1, "Выбрать", "Закрыть", 5)
+          dialog = sampGetDialogText()
+        end
+      end
+      if wasKeyPressed(39) then
+        if tab ~= math.ceil(#coolads / 25) then
+          tab = tab + 1
+          if tab == nil then tab = 1 end
+          length = #coolads - (tab - 1) * 25
+          ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"
+          lastid = nil
+          for i = length, length - 25, - 1 do
+            if coolads[i] ~= nil then
+              if lastid == nil then lastid = i end
+              if i > lastid then lastid = i end
+              ads1 = ads1..coolads[i]
+            end
+          end
+          sampShowDialog(5125, "{348cb2}"..thisScript().name.." v"..thisScript().version.."   LSN: "..LSN..". SFN: "..SFN..". LVN: "..LVN..".   Blocked: "..blocked.."/"..adscount..".   Tab: "..tab..".   Use arrows to control.", ads1, "Выбрать", "Закрыть", 5)
+          dialog = sampGetDialogText()
+        end
+      end
+    end
     local resultMain, buttonMain, typ = sampHasDialogRespond(5125)
     if buttonMain == 1 and typ == 0 and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
       sampShowDialog(9890, "Флудер /ad", "Введите текст объявления и нажмите \"Флудить\".\nВведите /ads, чтобы остановить флудер.", "Флудить", "Закрыть", 1)
@@ -410,14 +462,14 @@ function sampev.onServerMessage(color, text)
       else
         blocked = blocked + 1
       end
-      return false
+      if data.options.toggle == true then return false end
     end
     if color == 14221512 and string.find(text, "сотрудник") then
       if string.find(text, "LV") then LVN = LVN + 1 end
       if string.find(text, "LS") then LSN = LSN + 1 end
       if string.find(text, "SF") then SFN = SFN + 1 end
       adscount = adscount + 1
-      return false
+      if data.options.toggle == true then return false end
     end
   end
   --адванс рп
@@ -428,10 +480,10 @@ function sampev.onServerMessage(color, text)
       if string.find(text, "SF |") then SFN = SFN + 1 end
       adscount = adscount + 1
       lua_thread.create(advancerp, text)
-      return false
+      if data.options.toggle == true then return false end
     end
     if color == 10027263 and string.find(text, "сотрудник") then
-      return false
+      if data.options.toggle == true then return false end
     end
   end
   --даймонд рп
@@ -443,10 +495,10 @@ function sampev.onServerMessage(color, text)
       if string.find(temptext, "LS") then LSN = LSN + 1 end
       if string.find(temptext, "SF") then SFN = SFN + 1 end
       adscount = adscount + 1
-      return false
+      if data.options.toggle == true then return false end
     end
     if color == 866792362 and string.find(text, "Объявление проверил") then
-      return false
+      if data.options.toggle == true then return false end
     end
   end
   --аризона рп
@@ -454,13 +506,13 @@ function sampev.onServerMessage(color, text)
     if color == 1941201407 and string.find(text, "Отправил") then
       adscount = adscount + 1
       lua_thread.create(arizonarp, text)
-      return false
+      if data.options.toggle == true then return false end
     end
     if color == 1941201407 and string.find(text, "сотрудник СМИ") then
       if string.find(text, "LV") then LVN = LVN + 1 end
       if string.find(text, "LS") then LSN = LSN + 1 end
       if string.find(text, "SF") then SFN = SFN + 1 end
-      return false
+      if data.options.toggle == true then return false end
     end
     text2 = text
     if string.find(text2, "{C17C2D}") then
@@ -468,7 +520,7 @@ function sampev.onServerMessage(color, text)
         if string.find(text2, "LV") then LVN = LVN + 1 end
         if string.find(text2, "LS") then LSN = LSN + 1 end
         if string.find(text2, "SF") then SFN = SFN + 1 end
-        return false
+        if data.options.toggle == true then return false end
       end
     end
     text3 = text
@@ -476,7 +528,7 @@ function sampev.onServerMessage(color, text)
       if string.find(text3, "ение") then
         adscount = adscount + 1
         lua_thread.create(arizonarp, string.sub(text3, 15, string.len(text3)))
-        return false
+        if data.options.toggle == true then return false end
       end
     end
   end
@@ -484,7 +536,7 @@ function sampev.onServerMessage(color, text)
   if mode == "Trinity-Rp" then
     if color == -290866945 and string.find(text, "[Реклама", 1, true) then
       lua_thread.create(trinityrp, text)
-      return false
+      if data.options.toggle == true then return false end
     end
   end
   --империал рпг
@@ -492,7 +544,7 @@ function sampev.onServerMessage(color, text)
     if color == 332279551 and string.find(text, "[Реклама]", 1, true) and string.find(text, "]:", 1, true) then
       lua_thread.create(imperial, text)
       adscount = adscount + 1
-      return false
+      if data.options.toggle == true then return false end
     end
   end
 end
