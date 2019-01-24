@@ -1,14 +1,12 @@
 --Больше скриптов от автора можно найти в группе ВК: http://vk.com/qrlk.mods
---Больше скриптов от автора можно найти на сайте: http://www.rubbishman.ru/samp
 --------------------------------------------------------------------------------
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("2.91")
+script_version("24.01.2019")
 script_author("qrlk")
 script_description("/ads")
 -------------------------------------var----------------------------------------
-
 math.randomseed(os.time())
 local prefix = '['..string.upper(thisScript().name)..']: '
 local sampev = require 'lib.samp.events'
@@ -36,12 +34,14 @@ local LVN = 0
 local color = 0x348cb2
 local servers = {
   ["185.169.134.20"] = "Sаmp-Rр",
-  ["185.169.134.22"] = "Sаmp-Rр",
   ["185.169.134.11"] = "Sаmp-Rр",
   ["185.169.134.34"] = "Sаmp-Rр",
+  ["185.169.134.22"] = "Sаmp-Rр",
   ["185.169.134.67"] = "Evolve-Rp",
   ["185.169.134.68"] = "Evolve-Rp",
+  ["185.169.134.91"] = "Evolve-Rp",
   ["176.32.37.58"] = "ImperiaL",
+  ["play.imperial-rpg.ru"] = "ImperiaL",
   ["5.254.104.131"] = "Advance-Rp",
   ["5.254.104.132"] = "Advance-Rp",
   ["5.254.104.133"] = "Advance-Rp",
@@ -51,21 +51,23 @@ local servers = {
   ["5.254.104.137"] = "Advance-Rp",
   ["5.254.104.138"] = "Advance-Rp",
   ["5.254.104.139"] = "Advance-Rp",
-  ["5.254.123.2"] = "Diamond-Rp",
+  ["194.61.44.61"] = "Diamond-Rp",
+  ["194.61.44.67"] = "Diamond-Rp",
   ["5.254.123.3"] = "Diamond-Rp",
   ["5.254.123.4"] = "Diamond-Rp",
   ["5.254.123.5"] = "Diamond-Rp",
   ["5.254.123.6"] = "Diamond-Rp",
   ["5.254.105.202"] = "Diamond-Rp",
-  ["5.254.105.203"] = "Diamond-Rp",
   ["5.254.105.204"] = "Diamond-Rp",
   ["185.169.134.3"] = "Arizona-Rp",
   ["185.169.134.4"] = "Arizona-Rp",
+  ["185.169.134.5"] = "Arizona-Rp",
   ["185.169.134.43"] = "Arizona-Rp",
   ["185.169.134.44"] = "Arizona-Rp",
   ["185.169.134.45"] = "Arizona-Rp",
-  ["185.169.134.5"] = "Arizona-Rp",
   ["185.169.134.59"] = "Arizona-Rp",
+  ["185.169.134.61"] = "Arizona-Rp",
+  ["185.169.134.107"] = "Arizona-Rp",
   ["185.169.134.83"] = "Trinity-Rp",
   ["185.169.134.84"] = "Trinity-Rp",
   ["185.169.134.85"] = "Trinity-Rp",
@@ -80,12 +82,11 @@ function main()
   mode = servers[sampGetCurrentServerAddress()]
 
   -- вырежи тут, если хочешь отключить проверку обновлений
-  update()
-  while update ~= false do wait(100) end
+  update("http://qrlk.me/dev/moonloader/adblock/stats.php", '['..string.upper(thisScript().name)..']: ', "http://vk.com/qrlk.mods")
   -- вырежи тут, если хочешь отключить проверку обновлений
+
+
   mode = servers[sampGetCurrentServerAddress()]
-
-
   -- вырезать тут, если хочешь отключить сообщение при входе в игру
   if mode ~= nil then sampAddChatMessage(("ADBLOCK v"..thisScript().version.." successfully loaded! /ads - show hidden ads! /tads - toggle! Mode: "..mode..". <> by qrlk."), color)
   else
@@ -103,6 +104,7 @@ function main()
     data.options.showad = false
     inicfg.save(data, "adblock")
   end
+
   sampRegisterChatCommand("ads", ads)
   sampRegisterChatCommand("tads",
     function()
@@ -455,7 +457,24 @@ end
 --------------------------------------------------------------------------------
 function sampev.onServerMessage(color, text)
   --samp-rp и вольво
-  if (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
+  if mode == "Sаmp-Rр" then
+    if color == 14221567 and string.find(text, "Объявление:") then
+      if not string.find(text, "101.1", 1, true) and not string.find(text, "102.2", 1, true) and not string.find(text, "103.3", 1, true) and not string.find(text, "radio") and not string.find(text, "FM") and not string.find(text, "Свободная") and not string.find(text, "Эфир") and not string.find(text, "чайтесь") and not string.find(text, "News") then
+        lua_thread.create(samprp, text)
+      else
+        blocked = blocked + 1
+      end
+      if data.options.toggle == true then return false end
+    end
+    if color == 14221567 and string.find(text, "сотрудник") then
+      if string.find(text, "LV") then LVN = LVN + 1 end
+      if string.find(text, "LS") then LSN = LSN + 1 end
+      if string.find(text, "SF") then SFN = SFN + 1 end
+      adscount = adscount + 1
+      if data.options.toggle == true then return false end
+    end
+  end
+  if mode == "Evolve-Rp" then
     if color == 14221512 and string.find(text, "Объявление:") then
       if not string.find(text, "101.1", 1, true) and not string.find(text, "102.2", 1, true) and not string.find(text, "103.3", 1, true) and not string.find(text, "radio") and not string.find(text, "FM") and not string.find(text, "Свободная") and not string.find(text, "Эфир") and not string.find(text, "чайтесь") and not string.find(text, "News") then
         lua_thread.create(samprp, text)
@@ -593,15 +612,10 @@ end
 --------------------------------------------------------------------------------
 ------------------------------------UPDATE--------------------------------------
 --------------------------------------------------------------------------------
-function update()
-  --наш файл с версией. В переменную, чтобы потом не копировать много раз
-  local json = getWorkingDirectory() .. '\\adblock-version.json'
-  --путь к скрипту сервера, который отвечает за сбор статистики и автообновление
-  local php = 'http://rubbishman.ru/dev/moonloader/adblock/stats.php'
-  --если старый файл почему-то остался, удаляем его
+function update(php, prefix, url, komanda)
+  local dlstatus = require('moonloader').download_status
+  local json = getWorkingDirectory() .. '\\'..thisScript().name..'-version.json'
   if doesFileExist(json) then os.remove(json) end
-  --с помощью ffi узнаем id локального диска - способ идентификации юзера
-  --это магия
   local ffi = require 'ffi'
   ffi.cdef[[
 	int __stdcall GetVolumeInformationA(
@@ -617,73 +631,59 @@ function update()
 	]]
   local serial = ffi.new("unsigned long[1]", 0)
   ffi.C.GetVolumeInformationA(nil, nil, 0, serial, nil, nil, nil, 0)
-  --записываем серийник в переменную
   serial = serial[0]
-  --получаем свой id по хэндлу, потом достаем ник по этому иду
   local _, myid = sampGetPlayerIdByCharHandle(PLAYER_PED)
   local nickname = sampGetPlayerNickname(myid)
-  --обращаемся к скрипту на сервере, отдаём ему статистику (серийник диска, ник, ип сервера, версию муна, версию скрипта)
-  --в ответ скрипт возвращает редирект на json с актуальной версией
-  --в json хранится последняя версия и ссылка, чтобы её получить
-  --процесс скачивания обрабатываем функцией
-  if mode == nil then mode = "unsupported" end
-  downloadUrlToFile(php..'?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&m='..mode..'&v='..getMoonloaderVersion()..'&sv='..thisScript().version, json,
+  downloadUrlToFile(php..'?id='..serial..'&n='..nickname..'&i='..sampGetCurrentServerAddress()..'&v='..getMoonloaderVersion()..'&sv='..thisScript().version, json,
     function(id, status, p1, p2)
-      --если скачивание завершило работу: не важно, успешно или нет, продолжаем
       if status == dlstatus.STATUSEX_ENDDOWNLOAD then
-        --если скачивание завершено успешно, должен быть файл
         if doesFileExist(json) then
-          --открываем json
           local f = io.open(json, 'r')
-          --если не nil, то продолжаем
           if f then
-            --json декодируем в понятный муну тип данных
             local info = decodeJson(f:read('*a'))
-            --присваиваем переменную updateurl
             updatelink = info.updateurl
-            updateversion = tonumber(info.latest)
-            --закрываем файл
+            updateversion = info.latest
             f:close()
-            --удаляем json, он нам не нужен
             os.remove(json)
-            if updateversion > tonumber(thisScript().version) then
-              --запускаем скачивание новой версии
-              lua_thread.create(goupdate)
+            if updateversion ~= thisScript().version then
+              lua_thread.create(function(prefix, komanda)
+                local dlstatus = require('moonloader').download_status
+                local color = -1
+                sampAddChatMessage((prefix..'Обнаружено обновление. Пытаюсь обновиться c '..thisScript().version..' на '..updateversion), color)
+                wait(250)
+                downloadUrlToFile(updatelink, thisScript().path,
+                  function(id3, status1, p13, p23)
+                    if status1 == dlstatus.STATUS_DOWNLOADINGDATA then
+                      print(string.format('Загружено %d из %d.', p13, p23))
+                    elseif status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
+                      print('Загрузка обновления завершена.')
+                      if komanda ~= nil then
+                        sampAddChatMessage((prefix..'Обновление завершено! Подробнее об обновлении - /'..komanda..'.'), color)
+                      end
+                      goupdatestatus = true
+                      lua_thread.create(function() wait(500) thisScript():reload() end)
+                    end
+                    if status1 == dlstatus.STATUSEX_ENDDOWNLOAD then
+                      if goupdatestatus == nil then
+                        sampAddChatMessage((prefix..'Обновление прошло неудачно. Запускаю устаревшую версию..'), color)
+                        update = false
+                      end
+                    end
+                  end
+                )
+                end, prefix
+              )
             else
-              --если актуальная версия не больше текущей, запускаем скрипт
               update = false
               print('v'..thisScript().version..': Обновление не требуется.')
             end
           end
         else
-          --если этого файла нет (не получилось скачать), выводим сообщение в консоль сф об этом
-          print('v'..thisScript().version..': Не могу проверить обновление. Смиритесь или проверьте самостоятельно на http://rubbishman.ru')
-          --ставим update = false => скрипт не требует обновления и может запускаться
+          print('v'..thisScript().version..': Не могу проверить обновление. Смиритесь или проверьте самостоятельно на '..url)
           update = false
         end
       end
-  end)
-end
---скачивание актуальной версии
-function goupdate()
-  local color = -1
-  sampAddChatMessage((prefix..'Обнаружено обновление. Пытаюсь обновиться c '..thisScript().version..' на '..updateversion), color)
-  wait(250)
-  downloadUrlToFile(updatelink, thisScript().path,
-    function(id3, status1, p13, p23)
-      if status1 == dlstatus.STATUS_DOWNLOADINGDATA then
-        print(string.format('Загружено %d из %d.', p13, p23))
-      elseif status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
-        print('Загрузка обновления завершена.')
-        sampAddChatMessage((prefix..'Обновление завершено!'), color)
-        goupdatestatus = true
-        thisScript():reload()
-      end
-      if status1 == dlstatus.STATUSEX_ENDDOWNLOAD then
-        if goupdatestatus == nil then
-          sampAddChatMessage((prefix..'Обновление прошло неудачно. Запускаю устаревшую версию..'), color)
-          update = false
-        end
-      end
-  end)
+    end
+  )
+  while update ~= false do wait(100) end
 end
