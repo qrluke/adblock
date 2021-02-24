@@ -9,7 +9,7 @@
 <img src="https://img.shields.io/date/1510002000?label=released" >
 </p>
 
-A **[moonloader](https://gtaforums.com/topic/890987-moonloader/)** script that sends text to the chat under certain conditions, which can be useful for some **[gta samp](https://sa-mp.com/)** players.
+A **[moonloader](https://gtaforums.com/topic/890987-moonloader/)** script that blocks in-game ads on multiple role-playing servers (**[gta samp](https://sa-mp.com/)**).
 
 It also requires **[CLEO 4+](http://cleo.li/?lang=ru)**, **[SAMPFUNCS 5+](https://blast.hk/threads/17/)** and **[SAMP.Lua](https://github.com/THE-FYP/SAMP.Lua)**.
 
@@ -21,14 +21,13 @@ It also requires **[CLEO 4+](http://cleo.li/?lang=ru)**, **[SAMPFUNCS 5+](https:
 Многих раздражают объявления на RolePlay серверах SA:MP, потому что они часто отвлекают внимание.  
 ADBLOCK был создан для решения этой проблемы. Список того, что он умеет, находится ниже.  
 
-**Требования:** [CLEO 4+](http://cleo.li/?lang=ru), [SAMPFUNCS 5.3.3](https://blast.hk/threads/17/), [MoonLoader](https://blast.hk/threads/13305/), [SAMP.Lua](https://blast.hk/threads/14624/).  
+**Требования:** [CLEO 4+](http://cleo.li/?lang=ru), [SAMPFUNCS 5+](https://blast.hk/threads/17/), [MoonLoader](https://blast.hk/threads/13305/), [SAMP.Lua](https://blast.hk/threads/14624/).  
 **Активация:** Скрипт активируется автоматически. У скрипта нет настроек, поэтому автообновление, телеметрию и уведомление при входе можно отключить только вручную, вырезав блокнотом по линии в коде.
 
 * /ads - открыть диалог скрипта.  
 * /tads - вкл/выкл скрытия объяв.
 
-**Автор:** [qrlk (James_Bond / Phil_Coulson)](http://rubbishman.ru/samp).  
-**Обсуждение в группе VK:** [ссылка](https://vk.com/topic-168860334_38597269).
+**Автор:** [qrlk](http://rubbishman.ru/samp).  
 
 # Функции
 **Скрипт поддерживает**: Samp-Rp, Evolve-Rp, Advance RP, Diamond RP, Arizona RP, Trinity RP и ImperiaL RPG.
@@ -57,3 +56,11 @@ ADBLOCK был создан для решения этой проблемы. С�
 ![https://i.imgur.com/Gwk6Y1t.jpg?1](https://i.imgur.com/Gwk6Y1t.jpg?1)
 ![https://i.imgur.com/W5hOHsv.jpg?2](https://i.imgur.com/W5hOHsv.jpg?2)
 ![https://i.imgur.com/uRzSTLD.jpg?1](https://i.imgur.com/uRzSTLD.jpg?1)
+
+## Ссылки
+* [Автор](http://qrlk.me/)
+* [Тема на BlastHack](https://www.blast.hk/threads/19460/)
+* [Страница в группе VK](https://vk.com/qrlk.mods?w=page-168860334_54271507)
+* [Список скриптов QRLK MODS](https://vk.com/qrlk.mods?w=page-168860334_54271482)
+
+P.S. Группа VK не обновляется.
