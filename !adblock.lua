@@ -3,7 +3,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("24.11.2020")
+script_version("24.02.2021")
 script_author("qrlk")
 script_description("/ads")
 -------------------------------------var----------------------------------------
@@ -33,10 +33,10 @@ local SFN = 0
 local LVN = 0
 local color = 0x348cb2
 local servers = {
-  ["95.181.158.75"] = "Sаmp-Rр",
-  ["95.181.158.64"] = "Sаmp-Rр",
-  ["95.181.158.70"] = "Sаmp-Rр",
-  ["95.181.158.78"] = "Sаmp-Rр",
+  ["95.181.158.75"] = "Samp-Rp",
+  ["95.181.158.64"] = "Samp-Rp",
+  ["95.181.158.70"] = "Samp-Rp",
+  ["95.181.158.78"] = "Samp-Rp",
   ["185.169.134.67"] = "Evolve-Rp",
   ["185.169.134.68"] = "Evolve-Rp",
   ["185.169.134.91"] = "Evolve-Rp",
@@ -116,7 +116,7 @@ function main()
 
   while true do
     wait(0)
-    if Enable and (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then
+    if Enable and (mode == "Samp-Rp" or mode == "Evolve-Rp") then
       sampSendChat("/ad "..floodtext)
       wait(1100)
     end
@@ -298,7 +298,7 @@ function ads()
 end
 --диалог /ads
 function adss()
-  if (mode == "Sаmp-Rр" or mode == "Evolve-Rp" or mode == "ImperiaL" or mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then
+  if (mode == "Samp-Rp" or mode == "Evolve-Rp" or mode == "ImperiaL" or mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then
     if tab == nil then tab = 1 end
     length = #coolads - (tab - 1) * 25
     ads1 = "ID\tОбъявление\tПрислал\tНомер\n \tПодать объявление\n \tПоиск по объявлениям\n"
@@ -353,7 +353,7 @@ function adss()
     end
     local resultMain, buttonMain, typ = sampHasDialogRespond(5125)
     if buttonMain == 1 and typ == 0 then
-      if mode == "Sаmp-Rр" or mode == "Evolve-Rp" then
+      if mode == "Samp-Rp" or mode == "Evolve-Rp" then
         sampShowDialog(9890, "Флудер /ad", "Введите текст объявления и нажмите \"Флудить\".\nВведите /ads, чтобы остановить флудер.", "Флудить", "Закрыть", 1)
         while sampIsDialogActive(9890) do wait(100) end
         local resultMain, buttonMain, typ = sampHasDialogRespond(9890)
@@ -410,7 +410,7 @@ function adss()
             if sampGetCurrentDialogEditboxText(9899) ~= "" then
               if (mode == "ImperiaL") then sampSendChat("/pm "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
               if (mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then sampSendChat("/sms "..adnomers[lastid - typ + 2].." "..sampGetCurrentDialogEditboxText(9899)) end
-              if (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
+              if (mode == "Samp-Rp" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
               ads()
             end
           else
@@ -436,7 +436,7 @@ function searchres()
         local resultMain, buttonMain, typ = sampHasDialogRespond(9899)
         if buttonMain == 1 then
           if sampGetCurrentDialogEditboxText(9899) ~= "" then
-            if (mode == "Sаmp-Rр" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
+            if (mode == "Samp-Rp" or mode == "Evolve-Rp") then sampSendChat("/t "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
             if (mode == "Advance-Rp" or mode == "Diamond-Rp" or mode == "Arizona-Rp" or mode == "Trinity-Rp") then sampSendChat("/sms "..adnomers[typ].." "..sampGetCurrentDialogEditboxText(9899)) end
             if (mode == "ImperiaL") then sampSendChat("/pm "..i.." "..sampGetCurrentDialogEditboxText(9899)) end
             wait(400)
@@ -459,7 +459,7 @@ end
 --------------------------------------------------------------------------------
 function sampev.onServerMessage(color, text)
   --samp-rp и вольво
-  if mode == "Sаmp-Rр" then
+  if mode == "Samp-Rp" then
     if color == 14221567 and string.find(text, "Объявление:") then
       if not string.find(text, "101.1", 1, true) and not string.find(text, "102.2", 1, true) and not string.find(text, "103.3", 1, true) and not string.find(text, "radio") and not string.find(text, "FM") and not string.find(text, "Свободная") and not string.find(text, "Эфир") and not string.find(text, "чайтесь") and not string.find(text, "News") then
         lua_thread.create(samprp, text)
