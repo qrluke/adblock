@@ -1,3 +1,22 @@
+<h1 align="center">adblock</h1>
+
+<p align="center">
+<img src="https://img.shields.io/badge/made%20for-GTA%20SA--MP-blue" >
+<a href="https://github.com/qrlk/adblock#функциональность-на-разных-серверах"><img src="https://img.shields.io/badge/Server-Click-red"></a>
+<img src="https://img.shields.io/github/languages/top/qrlk/rphelper">
+<img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users%20%28active%29&query=result&url=http%3A%2F%2Fqrlk.me%2Fdev%2Fmoonloader%2Fusers_active.php%3Fscript%3Drphelper">
+<img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users%20%28all%20time%29&query=result&url=http%3A%2F%2Fqrlk.me%2Fdev%2Fmoonloader%2Fusers_all.php%3Fscript%3Drphelper">
+<img src="https://img.shields.io/date/1510002000?label=released" >
+</p>
+
+A **[moonloader](https://gtaforums.com/topic/890987-moonloader/)** script that sends text to the chat under certain conditions, which can be useful for some **[gta samp](https://sa-mp.com/)** players.
+
+It also requires **[CLEO 4+](http://cleo.li/?lang=ru)**, **[SAMPFUNCS 5+](https://blast.hk/threads/17/)** and **[SAMP.Lua](https://github.com/THE-FYP/SAMP.Lua)**.
+
+---
+
+**The following description is in Russian, because it is the main language of the user base**.
+
 # Описание 
 Многих раздражают объявления на RolePlay серверах SA:MP, потому что они часто отвлекают внимание.  
 ADBLOCK был создан для решения этой проблемы. Список того, что он умеет, находится ниже.  
