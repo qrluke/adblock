@@ -71,22 +71,39 @@ local servers = {
   ["185.169.134.84"] = "Trinity-Rp",
   ["185.169.134.85"] = "Trinity-Rp"
 }
+
+local serversNames = {
+  ["Samp-Rp"] = "Samp-Rp",
+  ["Evolve"] = "Evolve-Rp",
+  ["ImperiaL"] = "ImperiaL",
+  ["Advance"] = "Advance-Rp",
+  ["Diamond"] = "Diamond-Rp",
+  ["Arizona"] = "Arizona-Rp",
+  ["Trinity"] = "Trinity-Rp"
+}
+
+function getModeByServerName(sname)
+  for k, v in pairs(serversNames) do
+    if string.find(sname, k, 1, true) then
+      return v
+    end
+  end
+end
 -------------------------------------MAIN---------------------------------------
 function main()
   if not isSampfuncsLoaded() or not isSampLoaded() then return end
   while not isSampAvailable() do wait(100) end
 
-
-  while sampGetCurrentServerAddress() == nil do wait(100) sampAddChatMessage("text", color) end
-  mode = servers[sampGetCurrentServerAddress()]
+  while sampGetCurrentServerAddress() == nil do wait(100) end
+  --while sampGetCurrentServerName() == ""
 
   -- вырежи тут, если хочешь отключить проверку обновлений
   update("http://qrlk.me/dev/moonloader/adblock/stats.php", '['..string.upper(thisScript().name)..']: ', "http://vk.com/qrlk.mods", "adblockchangelog")
-	openchangelog("adblockchangelog", "http://qrlk.me/changelog/adblock")
+  openchangelog("adblockchangelog", "http://qrlk.me/changelog/adblock")
   -- вырежи тут, если хочешь отключить проверку обновлений
 
-
-  mode = servers[sampGetCurrentServerAddress()]
+	while sampGetCurrentServerName() == "SA-MP" do wait(100) end
+  mode = servers[sampGetCurrentServerAddress()] or getModeByServerName(sampGetCurrentServerName())
   -- вырезать тут, если хочешь отключить сообщение при входе в игру
   if mode ~= nil then sampAddChatMessage(("ADBLOCK v"..thisScript().version.." successfully loaded! /ads - show hidden ads! /tads - toggle! Mode: "..mode..". <> by qrlk."), color)
   else
