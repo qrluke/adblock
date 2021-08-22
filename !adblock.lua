@@ -15,7 +15,6 @@ local inicfg = require 'inicfg'
 local data = inicfg.load({
   options =
   {
-    showad = true,
     toggle = true,
   },
 }, 'adblock')
@@ -113,15 +112,6 @@ function main()
 
   if mode == nil then thisScript():unload() end
 
-  if data.options.showad == true then
-    sampAddChatMessage("[ADBLOCK]: Внимание! У нас появилась группа ВКонтакте: vk.com/qrlk.mods", - 1)
-    sampAddChatMessage("[ADBLOCK]: Подписавшись на неё, вы сможете получать новости об обновлениях,", - 1)
-    sampAddChatMessage("[ADBLOCK]: новых скриптах, а так же учавствовать в розыгрышах платных скриптов!", - 1)
-    sampAddChatMessage("[ADBLOCK]: Это сообщение показывается один раз для каждого скрипта. Спасибо за внимание.", - 1)
-    data.options.showad = false
-    inicfg.save(data, "adblock")
-  end
-
   sampRegisterChatCommand("ads", ads)
   sampRegisterChatCommand("tads",
     function()
@@ -139,8 +129,6 @@ function main()
     end
   end
 end
-
-
 --------------------------------------------------------------------------------
 -----------------------------РЕЖИМЫ ПОД КАЖДЫЙ СЕРВЕР---------------------------
 --------------------------------------------------------------------------------
