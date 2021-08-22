@@ -717,7 +717,7 @@ function openchangelog(komanda, url)
           while sampIsDialogActive() do wait(100) end
           local result, button, list, input = sampHasDialogRespond(222228)
           if button == 1 then
-            os.execute('explorer "http://qrlk.me/changelog/adblock"')
+            os.execute('explorer "'..changelogurl..'"')
           end
         end
       )
