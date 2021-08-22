@@ -2,7 +2,7 @@
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("11.05.2021")
+script_version("22.08.2021")
 script_author("qrlk")
 script_description("/ads")
 script_url("https://github.com/qrlk/adblock")
