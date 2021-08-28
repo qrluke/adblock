@@ -3,7 +3,7 @@ require "lib.moonloader"
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("22.08.2021")
+script_version("28.08.2021")
 script_author("qrlk")
 script_description("/ads")
 script_url("https://github.com/qrlk/adblock")
@@ -73,6 +73,7 @@ local servers = {
 }
 
 local serversNames = {
+  ["SRP"] = "Samp-Rp",
   ["Samp-Rp"] = "Samp-Rp",
   ["Evolve"] = "Evolve-Rp",
   ["ImperiaL"] = "ImperiaL",
