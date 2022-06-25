@@ -1,5 +1,6 @@
 {
   "latest": "28.08.2021",
   "updateurl": "https://raw.githubusercontent.com/qrlk/adblock/master/!adblock.lua",
-  "changelog": "https://github.com/qrlk/adblock/blob/master/CHANGELOG.md"
+  "changelog": "https://github.com/qrlk/adblock/blob/master/CHANGELOG.md",
+  "telemetry": "http://qrlk.me/dev/moonloader/adblock/stats.php"
 }
