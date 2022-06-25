@@ -3,7 +3,7 @@ require "lib.moonloader"
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("28.08.2021")
+script_version("25.06.2022")
 script_author("qrlk")
 script_description("/ads")
 script_url("https://github.com/qrlk/adblock")
