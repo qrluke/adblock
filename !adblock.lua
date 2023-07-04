@@ -3,7 +3,7 @@ require "lib.moonloader"
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("25.06.2022")
+script_version("25.06.2022-srpfix")
 script_author("qrlk")
 script_description("/ads")
 script_url("https://github.com/qrlk/adblock")
@@ -501,7 +501,7 @@ function sampev.onServerMessage(color, text)
       end
       if data.options.toggle == true then return false end
     end
-    if color == 14221567 and string.find(text, "сотрудник") then
+    if color == 14221567 and string.find(text, "Редакция News") then
       if string.find(text, "LV") then LVN = LVN + 1 end
       if string.find(text, "LS") then LSN = LSN + 1 end
       if string.find(text, "SF") then SFN = SFN + 1 end
