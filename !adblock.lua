@@ -3,7 +3,7 @@ require "lib.moonloader"
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("25.06.2022-srpfix2")
+script_version("19.07.2023")
 script_author("qrlk")
 script_description("/ads")
 script_url("https://github.com/qrlk/adblock")
@@ -170,7 +170,7 @@ function samprp(text)
   if trigger == false then
     id = id + 1
     allads[id] = text
-	adtext, adnick, adnomer = string.match(ad, " Объявление: (.+) Прислал.*: (.+)%. Тел: (%d+)")
+	adtext, adnick, adnomer = string.match(text, " Объявление: (.+) Прислал.*: (.+)%. Тел: (%d+)")
     if adnick == nil then
 	  adtext = "ERROR"
       adnick = "ERROR"
