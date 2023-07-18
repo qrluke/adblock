@@ -3,7 +3,7 @@ require "lib.moonloader"
 -------------------------------------META---------------------------------------
 --------------------------------------------------------------------------------
 script_name("ADBLOCK")
-script_version("25.06.2022-srpfix")
+script_version("25.06.2022-srpfix2")
 script_author("qrlk")
 script_description("/ads")
 script_url("https://github.com/qrlk/adblock")
@@ -170,11 +170,9 @@ function samprp(text)
   if trigger == false then
     id = id + 1
     allads[id] = text
-    adtext = string.sub(text, 13, string.find(text, " Прислал: ") - 2)
-    if string.find(text, " Тел: .") then
-      adnick = string.sub(text, string.find(text, " Прислал: ") + 10, string.find(text, " Тел: ") - 2)
-      adnomer = string.sub(text, string.find(text, " Тел: ") + 6, string.len(text))
-    else
+	adtext, adnick, adnomer = string.match(ad, " Объявление: (.+) Прислал.*: (.+)%. Тел: (%d+)")
+    if adnick == nil then
+	  adtext = "ERROR"
       adnick = "ERROR"
       adnomer = "ERROR"
     end
