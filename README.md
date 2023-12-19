@@ -4,8 +4,8 @@
 <img src="https://img.shields.io/badge/made%20for-GTA%20SA--MP-blue" >
 <a href="https://github.com/qrlk/adblock#функциональность-на-разных-серверах"><img src="https://img.shields.io/badge/Server-Click-red"></a>
 <img src="https://img.shields.io/github/languages/top/qrlk/rphelper">
-<img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users%20%28active%29&query=result&url=http%3A%2F%2Fqrlk.me%2Fdev%2Fmoonloader%2Fusers_active.php%3Fscript%3Drphelper">
-<img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users%20%28all%20time%29&query=result&url=http%3A%2F%2Fqrlk.me%2Fdev%2Fmoonloader%2Fusers_all.php%3Fscript%3Drphelper">
+<img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users%20%28active%29&query=result&url=http%3A%2F%2Fqrlk.me%2Fdev%2Fmoonloader%2Fusers_active.php%3Fscript%3Dadblock">
+<img src="https://img.shields.io/badge/dynamic/json?color=blueviolet&label=users%20%28all%20time%29&query=result&url=http%3A%2F%2Fqrlk.me%2Fdev%2Fmoonloader%2Fusers_all.php%3Fscript%3Dadblock">
 <img src="https://img.shields.io/date/1510002000?label=released" >
 </p>
 
